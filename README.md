@@ -1,8 +1,8 @@
-# Django Microfinance
+# Microfinance
 
 ## About this project
 
-Microfinance is an open source and free platform for collecting KYC data, structuring loans, and setting up other financial products such as insurance or asset financing. The platform is focused on the unique lending environment of emerging economies. 
+Microfinance is an open source and free platform for structuring loans and setting up financial products in emerging economies. 
 
 
 ## How to run the project and get started
