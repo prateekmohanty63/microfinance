@@ -35,9 +35,8 @@ def registerUser(request):
 
         user = CustomUser.objects.create(
             first_name=data['name'],
-            name=data['name'],
-            username=data['email'],
-            email=data['email'],
+            username=data['email'].strip().lower(),
+            email=data['email'].strip().lower(),
             password=make_password(data['password'])
         )
 
@@ -57,8 +56,8 @@ def updateUserProfile(request):
 
     data = request.data
     user.first_name = data['name']
-    user.username = data['email']
-    user.email = data['email']
+    user.username = data['email'].strip().lower()
+    user.email = data['email'].strip().lower()
 
     if data['password'] != '':
         user.password = make_password(data['password'])
@@ -100,8 +99,8 @@ def updateUser(request, pk):
     data = request.data
 
     user.first_name = data['name']
-    user.username = data['email']
-    user.email = data['email']
+    user.username = data['email'].strip().lower()
+    user.email = data['email'].strip().lower()
     user.is_staff = data['isAdmin']
 
     user.save()
