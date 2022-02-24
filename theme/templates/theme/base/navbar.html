@@ -1,0 +1,47 @@
+<nav class="navbar navbar-expand-lg bg-white navbar-light shadow-sm mb-1">
+    <div class="container px-5">
+        <a class="navbar-brand text-dark" href="{% url 'landing' %}">Microfinance</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i data-feather="menu"></i></button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto">
+
+              {% if user.is_authenticated %}
+
+              <li class="nav-item"><a class="nav-link font-weight-500" href="">Link 1</a></li>
+              <li class="nav-item"><a class="nav-link font-weight-500" href="">Link 2</a></li>
+              <li class="nav-item dropdown no-arrow">
+                <a class="nav-link dropdown-toggle" id="navbarDropdownDocs" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    Dropdown Link
+                </a>
+                <div class="dropdown-menu dropdown-menu-end animated--fade-in-up" aria-labelledby="navbarDropdownDocs" data-bs-popper="none">
+                    <a class="dropdown-item py-3" href="">
+                        <div>
+                            Link A
+                        </div>
+                    </a>
+                    <div class="dropdown-divider m-0"></div>
+                    <a class="dropdown-item py-3" href="">
+                        <div>
+                            Link B
+                        </div>
+                    </a>
+                    <div class="dropdown-divider m-0"></div>
+                    <a class="dropdown-item py-3" href="">
+                        <div>
+                            Link C
+                        </div>
+                    </a>
+                </div>
+              </li>
+              {% include "theme/base/widget-my-account-dropdown.html" %}
+
+              {% else %}
+
+              <li class="nav-item"><a class="nav-link" href="{% url 'about' %}">About</a></li>
+              <li class="nav-item"><a class="nav-link font-weight-500" href="{% url 'login' %}">Login</a></li>
+
+              {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>

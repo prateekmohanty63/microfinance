@@ -1,0 +1,69 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+
+        {% block title %}
+        <title>Microfinance</title>
+        {% endblock %}
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="{% static 'css/theme.css' %}" />
+        <link rel="stylesheet" href="{% static 'css/sb-theme.css' %}" />
+        
+        <link rel="icon" type="image/x-icon" href="{% static 'assets/img/favicon.png' %}" />
+
+        <!-- <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet"> -->
+        <link rel="stylesheet" href="{% static 'css/nunito.css' %}" />
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/feather-icons/4.24.1/feather.min.js" crossorigin="anonymous"></script>
+
+        {# load jQuery at the top so it's always available, no worries on load times #}
+
+        <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" crossorigin="anonymous" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"></script> -->
+        <script src="{% static 'js/popper.js' %}"></script>
+
+        {% block extraheaderstuff %}{% endblock%}
+
+        {% block extratopjs %}{% endblock %}
+
+        {% block css-add-ons %}{% endblock %}
+
+        <script type="text/javascript">
+          window.CSRF_TOKEN = "{{ csrf_token }}";
+        </script>
+
+    </head>
+    <body class="bg-white">
+
+        <main>
+
+            <!-- Start top bar -->
+            {% block topbar %}{% endblock %}
+            <!-- End top bar -->
+
+            <!-- Start body content -->
+            <div class="content">
+              {% block content %}{% endblock %}
+            </div>
+
+        </main>
+
+        <!-- Start footer -->
+            
+        <!-- End footer content -->
+
+        <script src="{% static 'js/scripts.js' %}"></script>
+
+        {% block js-add-ons %}{% endblock %}
+    </body>
+</html>

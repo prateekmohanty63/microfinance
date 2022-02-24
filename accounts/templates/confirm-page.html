@@ -1,0 +1,81 @@
+{% extends "theme/base/base.html" %}
+{% load static %}
+
+{% block topbar %}
+{% include "theme/base/password-help-header.html" %}
+{% endblock %}
+
+{% block content %}
+<section class="pb-10 pt-10">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-xl-5 col-lg-6 col-md-8 col-sm-11">
+          <div class="card">
+              <div class="card-body p-5">
+                  <div class="form-group">
+                    
+                    {% if render_kind == 'signup' %}
+                    <p class="card-text mb-3">
+                      Thanks so much for signing up! An email with an account confirmation link has been sent to <b>{{email}}.</b>
+                    </p>
+                    <p class="card-text mb-3">
+                      Please confirm your account before logging in to get started.
+                    </p>
+                    {% endif %}
+
+
+                    {% if render_kind == 'signup_confirmed' %}
+                    <p class="card-text mb-3">
+                      Your account has been confirmed! Click below to login and get started.
+                    </p>
+                    {% endif %}
+
+                    
+                    {% if render_kind == 'password_updated' %}
+                    <p class="card-text mb-3">
+                      Your password was successfully updated. Return to login and login with your new password.
+                    </p>
+                    {% endif %}
+
+                    
+                    {% if render_kind == 'invalid_key' %}
+                    <p class="card-text mb-3">
+                      The link is expired or invalid. Please contact to site admin.
+                    </p>
+                    {% endif %}
+
+                    
+                    {% if render_kind == 'reset_password' %}
+                    <p class="card-text mb-3">
+                      An email with instructions to reset your password has been sent to <b>{{email}}</b>.
+                    </p>
+                    <p class="card-text mb-3">
+                      Please contact support if the email does not arrive within 5 minutes.
+                    </p>
+                    {% endif %}
+
+                    <a class="card-text mt-3" href="{% url 'login' %}">Return to Login</a>
+
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+{% endblock %}
+
+{% block extrajs %}
+<script>
+  $(document).ready(() => {
+    var renderKind = '{{ render_kind | safe }}';
+
+    if (renderKind === 'signup_confirmed' || renderKind === 'invalid_key'){
+      setTimeout(function () {
+        window.location.href = "{% url 'login' %}";
+      }, 3000);
+    }
+  });
+</script>
+{% endblock %}

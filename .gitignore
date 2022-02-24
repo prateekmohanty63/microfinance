@@ -1,0 +1,21 @@
+# Text backup files
+*.bak
+
+# Database
+*.sqlite3
+
+*.pyc
+.DS_Store
+*.swp
+/venv/
+/env/
+/media/
+.env
+.vscode
+/static
+
+# local DB credentials
+/core/settings/config.py
+
+# migration file and pycache files
+__pycache__/

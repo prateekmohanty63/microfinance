@@ -1,0 +1,21 @@
+{% load static %}
+{% if user.is_authenticated %}
+<li class="nav-item dropdown no-arrow me-0">
+    <a class="nav-link dropdown-toggle" id="navbarDropdownUserImage" href="javascript:void(0);" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <div class="font-weight-500">My Account</div>
+    </a>
+    <div class="dropdown-menu dropdown-menu-end animated--fade-in-up" aria-labelledby="navbarDropdownDocs" data-bs-popper="none">
+        <a class="dropdown-item py-3" href="#">
+            <div>
+                Profile
+            </div>
+        </a>
+        <div class="dropdown-divider m-0"></div>
+        <a class="dropdown-item py-3" href="{% url 'logout' %}">
+            <div>
+                Logout
+            </div>
+        </a>
+    </div>
+</li>
+{% endif %}
