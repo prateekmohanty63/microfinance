@@ -37,9 +37,9 @@ Please note that the project does rely on some third party services, such as Mai
 
 The project relies on celery for background tasks, such as sending out emails. To run celery, make sure you have redis running locally then start celery. You will need to be within the same virtualenv of the project.
 
-In one terminal run ```redis-server``` (doesn't need to be in the virtualenv)
-In another terminal in the virtualenv run ```celery -A core worker -l info``` to start the background worker
-You can also run ```celery -A core beat -l info``` in another terminal within the virtualenv for more info
+* In one terminal run ```redis-server``` (doesn't need to be in the virtualenv)
+* In another terminal in the virtualenv run ```celery -A core worker -l info``` to start the background worker
+* You can also run ```celery -A core beat -l info``` in another terminal within the virtualenv for more info
 
 
 ## Deployment
