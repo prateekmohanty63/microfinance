@@ -2,7 +2,7 @@
 
 ## About this project
 
-Microfinance is an open source and free platform for structuring loans and setting up financial products in emerging economies. 
+Microfinance is an open source platform for structuring loans and setting up financial products in emerging economies. 
 
 
 ## How to run the project and get started
