@@ -1,14 +1,14 @@
 from django.urls import path
-from api.views import loan_product_views as views
+from api.views.loan_product import product_views as product_views
 
 urlpatterns = [
 
     # Loan Products
-    path('', views.getProducts, name="products"),
-    path('create/', views.createProduct, name="product-create"),
-    path('<str:product_id>/', views.getProduct, name="product"),
-    path('<str:product_id>/update/', views.updateProduct, name="product-update"),
-    path('<str:product_id>/archive/', views.archiveProduct, name="product-archive"),
+    path('', product_views.getProducts, name="products"),
+    path('create/', product_views.createProduct, name="product-create"),
+    path('<str:product_id>/', product_views.getProduct, name="product"),
+    path('<str:product_id>/update/', product_views.updateProduct, name="product-update"),
+    path('<str:product_id>/archive/', product_views.archiveProduct, name="product-archive"),
 
     # Product Config
     # path('<str:product_id>/config/', views.getProductConfig, name="product-config"),
