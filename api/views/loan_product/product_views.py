@@ -7,6 +7,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from loans.models import Product, ProductConfig
 from api.serializers import LoanProductSerializer as ProductSerializer
+from api.serializers import LoanProductConfigSerializer as ProductConfigSerializer
 
 from rest_framework import status
 
@@ -112,7 +113,6 @@ def getProducts(request):
         message = {'detail': user_organization['message']}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
-    
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
@@ -168,7 +168,6 @@ def updateProduct(request, product_id):
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
 
-
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def archiveProduct(request, product_id):
@@ -186,6 +185,67 @@ def archiveProduct(request, product_id):
             product.save()
             message = {'detail': 'Product was archived'}
             return Response(message, status=200)
+            
+        else:
+            message = {'detail': user_organization['message']}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+    else:
+        message = {'detail': 'Product does not exist'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getProductConfig(request, product_id):
+
+    user = request.user
+
+    # Check if the product is valid
+    product = Product.objects.filter(product_id=product_id, status='active').first()
+    if product:
+        organization_id = product.organization.organization_id
+        # Verify the user has permission to be looking at and editing product details (must be part of the org and admin)
+        user_organization = check_organization_permissions(user=user, organization_id=organization_id, roles=['admin'])
+        if user_organization['organization']:
+            product_config = ProductConfig.objects.filter(product=product, current=True).first()
+            serializer = ProductConfigSerializer(product_config, many=False)
+            return Response({'product_config': serializer.data})
+            
+        else:
+            message = {'detail': user_organization['message']}
+            return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+    else:
+        message = {'detail': 'Product does not exist'}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+       
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateProductConfig(request, product_id):
+    data = request.data
+    user = request.user
+
+    # Check if the product is valid
+    product = Product.objects.filter(product_id=product_id, status='active').first()
+    if product:
+        organization_id = product.organization.organization_id
+        # Verify the user has permission to be looking at and editing product details (must be part of the org and admin)
+        user_organization = check_organization_permissions(user=user, organization_id=organization_id, roles=['admin'])
+        if user_organization['organization']:
+            product_config = ProductConfig.objects.filter(product=product, current=True).first()
+            if 'label' in data:
+                product_config.label = data['label']
+            if 'length' in data:
+                product_config.length = data['length']
+            if 'overdue_on_day' in data:
+                product_config.overdue_on_day = data['overdue_on_day']
+            if 'default_on_day' in data:
+                product_config.default_on_day = data['default_on_day']
+            product_config.save()
+            serializer = ProductConfigSerializer(product_config, many=False)
+            return Response({'products': serializer.data})
             
         else:
             message = {'detail': user_organization['message']}

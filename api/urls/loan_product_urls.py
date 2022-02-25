@@ -11,8 +11,8 @@ urlpatterns = [
     path('<str:product_id>/archive/', product_views.archiveProduct, name="product-archive"),
 
     # Product Config
-    # path('<str:product_id>/config/', views.getProductConfig, name="product-config"),
-    # path('<str:product_id>/config/update/', views.updateProductConfig, name="product-config-update"),
+    path('<str:product_id>/config/', product_views.getProductConfig, name="product-config"),
+    path('<str:product_id>/config/update/', product_views.updateProductConfig, name="product-config-update"),
     
     # Payment Config
     # path('<str:product_id>/payment-config/', views.getProductPaymentConfig, name="product-payment-configs"),

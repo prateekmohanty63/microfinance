@@ -4,7 +4,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from accounts.models import *
 from organizations.models import Organization, OrganizationSettings
 from loans.models import Product as LoanProduct
-
+from loans.models import ProductConfig as LoanProductConfig
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
@@ -79,3 +79,17 @@ class LoanProductSerializer(serializers.ModelSerializer):
 
     def get_organization_id(self, obj):
         return obj.organization.organization_id
+
+class LoanProductConfigSerializer(serializers.ModelSerializer):
+    product = serializers.SerializerMethodField(read_only=True)
+    product_id = serializers.SerializerMethodField(read_only=True)
+    
+    class Meta:
+        model = LoanProductConfig
+        fields = ['product', 'product_id', 'product_config_id', 'label', 'length', 'overdue_on_day', 'default_on_day']
+    
+    def get_product(self, obj):
+        return obj.product.name
+
+    def get_product_id(self, obj):
+        return obj.product.product_id

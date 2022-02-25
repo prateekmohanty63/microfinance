@@ -149,7 +149,7 @@ def archiveOrganization(request, organization_id):
 def getOrganizationSettings(request, organization_id):
 
     user = request.user
-    user_organization = check_organization_permissions(user=user, organization_id=organization_id, roles=['user', 'admin'])
+    user_organization = check_organization_permissions(user=user, organization_id=organization_id, roles=['admin'])
     if user_organization['organization']:
         organization = user_organization['organization']
         organization_settings = OrganizationSettings.objects.filter(organization=organization).first()
