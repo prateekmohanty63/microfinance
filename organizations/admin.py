@@ -13,13 +13,8 @@ class OrganizationAdmin(admin.ModelAdmin):
     search_fields = ('name', 'organization_id')
     list_per_page = 50
 
-    # Adds the public id and created user before saving
-    def save_model(self, request, obj, form, change):
-        if obj.organization_id == None or obj.organization_id == '':
-            obj.organization_id = randomstr()
-        if obj.created_user == None:
-            obj.created_user = request.user
-        super().save_model(request, obj, form, change)
+    def has_add_permission(self, request):
+        return False
 
 admin.site.register(Organization, OrganizationAdmin)
 
@@ -30,6 +25,9 @@ class OrganizationUserAdmin(admin.ModelAdmin):
     readonly_fields = ['user', 'organization', 'created_at', 'last_updated']
     list_per_page = 50
 
+    def has_add_permission(self, request):
+        return False
+
 admin.site.register(OrganizationUser, OrganizationUserAdmin)
 
 
@@ -38,5 +36,8 @@ class OrganizationSettingsAdmin(admin.ModelAdmin):
     fields = ['organization', 'multiple_loans_per_customer', 'created_at', 'last_updated']
     readonly_fields = ['organization', 'created_at', 'last_updated']
     list_per_page = 50
+
+    def has_add_permission(self, request):
+        return False
 
 admin.site.register(OrganizationSettings, OrganizationSettingsAdmin)

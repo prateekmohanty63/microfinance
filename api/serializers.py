@@ -2,7 +2,8 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from accounts.models import *
-from organizations.models import *
+from organizations.models import Organization, OrganizationSettings
+from loans.models import Product as LoanProduct
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -57,6 +58,21 @@ class OrganizationSettingsSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrganizationSettings
         fields = ['organization', 'organization_id', 'multiple_loans_per_customer']
+    
+    def get_organization(self, obj):
+        return obj.organization.name
+
+    def get_organization_id(self, obj):
+        return obj.organization.organization_id
+
+
+class LoanProductSerializer(serializers.ModelSerializer):
+    organization = serializers.SerializerMethodField(read_only=True)
+    organization_id = serializers.SerializerMethodField(read_only=True)
+    
+    class Meta:
+        model = LoanProduct
+        fields = ['product_id', 'name', 'organization', 'organization_id']
     
     def get_organization(self, obj):
         return obj.organization.name

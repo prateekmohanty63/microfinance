@@ -11,7 +11,8 @@ class Product(models.Model):
     id = models.AutoField(primary_key=True)
     product_id = models.CharField(max_length=16, null=False, blank=True)
     organization = models.ForeignKey('organizations.Organization', on_delete=models.SET_NULL, null=True)
-    label = models.CharField(max_length=200, null=False, blank=True)
+    name = models.CharField(max_length=200, null=False, blank=True)
+    created_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
 
@@ -29,34 +30,25 @@ class Product(models.Model):
     )
 
     def __str__(self):
-        return self.label
+        return self.name
 
 
 class ProductConfig(models.Model):
     id = models.AutoField(primary_key=True)
     product_config_id = models.CharField(max_length=16, null=False, blank=True)
     product = models.ForeignKey('Product', on_delete=models.SET_NULL, null=True)
-    length = models.IntegerField(null=False, blank=False)
-    overdue_on_day = models.IntegerField(null=False, blank=False)
-    default_on_day = models.IntegerField(null=False, blank=False)
+    label = models.CharField(max_length=200, null=True, blank=True)
+    length = models.IntegerField(null=True, blank=False)
+    overdue_on_day = models.IntegerField(null=True, blank=False)
+    default_on_day = models.IntegerField(null=True, blank=False)
     payment_config = models.ForeignKey('PaymentConfig', on_delete=models.SET_NULL, null=True)
     interest_config = models.ForeignKey('InterestConfig', on_delete=models.SET_NULL, null=True)
     fee_config = models.ForeignKey('FeeConfig', on_delete=models.SET_NULL, null=True)
+    created_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
 
-    PRODUCT_CONFIG_STATUS = (
-        ('active', 'Active'),
-        ('archived', 'Archived'),
-        ('deleted', 'Deleted'),
-    )
-    
-    status = models.CharField(
-        max_length=25,
-        choices=PRODUCT_CONFIG_STATUS,
-        blank=False,
-        default='active',
-    )
+    current = models.BooleanField(default=False)
 
     def __str__(self):
         return str(self.id)
@@ -68,6 +60,9 @@ class InterestConfig(models.Model):
     label = models.CharField(max_length=200, null=True, blank=True)
     day = models.IntegerField(null=False, blank=False)
     amount = models.FloatField(null=True, blank=True)
+    created_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
 
     INTEREST_CONFIG_STRUCTURE = (
         ('principle-percentage', 'Percentage of Principal'),
@@ -104,6 +99,9 @@ class FeeConfig(models.Model):
     label = models.CharField(max_length=200, null=True, blank=True)
     day = models.IntegerField(null=False, blank=False)
     amount = models.FloatField(null=True, blank=True)
+    created_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
 
     FEE_CONFIG_STRUCTURE = (
         ('flat-fee', 'Flat Fee'),
@@ -140,6 +138,9 @@ class PaymentConfig(models.Model):
     label = models.CharField(max_length=200, null=True, blank=True)
     day = models.IntegerField(null=False, blank=False)
     amount = models.FloatField(null=True, blank=True)
+    created_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
 
     PAYMENT_CONFIG_STRUCTURE = (
         ('flat-amount', 'Flat Amount'),
@@ -176,6 +177,7 @@ class Loan(models.Model):
     loan_number = models.CharField(max_length=16, null=False, blank=True)
     customer = product = models.ForeignKey('customers.Customer', on_delete=models.SET_NULL, null=True)
     product = models.ForeignKey('ProductConfig', on_delete=models.SET_NULL, null=True)
+    created_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
 
@@ -214,6 +216,7 @@ class Payment(models.Model):
     payment_id = models.CharField(max_length=32, null=False, blank=True)
     payment_number = models.CharField(max_length=16, null=False, blank=True)
     amount = models.FloatField(null=True, blank=True)
+    created_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
 
