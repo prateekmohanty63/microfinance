@@ -1,6 +1,7 @@
 from django.urls import path
 from api.views.loan_product import product_views as product_views
 from api.views.loan_product import product_config_views as product_config_views
+from api.views.loan_product import payment_config_views as payment_config_views
 
 urlpatterns = [
 
@@ -19,24 +20,24 @@ urlpatterns = [
     path('<str:product_id>/configs/<product_config_id>/archive/', product_config_views.archiveProductConfig, name="product-config-archive"),
     
     # Payment Config
-    # path('<str:product_id>/config/payment-config/', views.getProductPaymentConfig, name="product-payment-configs"),
-    # path('<str:product_id>/payment-config/create/', views.createProductPaymentConfig, name="product-payment-config-create"),
-    # path('<str:product_id>/payment-config/<str:payment_config_id>/', views.getProductPaymentConfig, name="product-payment-config"),
-    # path('<str:product_id>/payment-config/<str:payment_config_id>/update/', views.updateProductPaymentConfig, name="product-payment-config-update"),
-    # path('<str:product_id>/payment-config/<str:payment_config_id>/archive/', views.archiveProductPaymentConfig, name="product-payment-config-archive"),
+    path('<str:product_id>/configs/<product_config_id>/payment-configs/', payment_config_views.getPaymentConfigs, name="payment-configs"),
+    path('<str:product_id>/configs/<product_config_id>/payment-configs/create/', payment_config_views.createPaymentConfig, name="payment-config-create"),
+    path('<str:product_id>/configs/<product_config_id>/payment-configs/<str:payment_config_id>/', payment_config_views.getPaymentConfig, name="payment-config"),
+    path('<str:product_id>/configs/<product_config_id>/payment-configs/<str:payment_config_id>/update/', payment_config_views.updatePaymentConfig, name="payment-config-update"),
+    path('<str:product_id>/configs/<product_config_id>/payment-configs/<str:payment_config_id>/archive/', payment_config_views.archivePaymentConfig, name="payment-config-archive"),
 
     # Interest Config
-    # path('<str:product_id>/interest-config/', views.getProductInterestConfig, name="product-interest-configs"),
-    # path('<str:product_id>/interest-config/create/', views.createProductInterestConfig, name="product-interest-config-create"),
-    # path('<str:product_id>/interest-config/<str:interest_config_id>/', views.getProductInterestConfig, name="product-interest-config"),
-    # path('<str:product_id>/interest-config/<str:interest_config_id>/update/', views.updateProductInterestConfig, name="product-interest-config-update"),
-    # path('<str:product_id>/interest-config/<str:interest_config_id>/archive/', views.archiveProductInterestConfig, name="product-interest-config-archive"),
+    # path('<str:product_id>/configs/<product_config_id>/interest-configs/', views.getInterestConfigs, name="interest-configs"),
+    # path('<str:product_id>/configs/<product_config_id>/interest-configs/create/', views.createInterestConfig, name="interest-config-create"),
+    # path('<str:product_id>/configs/<product_config_id>/interest-configs/<str:interest_config_id>/', views.getInterestConfig, name="interest-config"),
+    # path('<str:product_id>/configs/<product_config_id>/interest-configs/<str:interest_config_id>/update/', views.updateInterestConfig, name="interest-config-update"),
+    # path('<str:product_id>/configs/<product_config_id>/interest-configs/<str:interest_config_id>/archive/', views.archiveInterestConfig, name="interest-config-archive"),
 
     # Fee Config
-    # path('<str:product_id>/fee-config/', views.getProductFeeConfig, name="product-fee-configs"),
-    # path('<str:product_id>/fee-config/create/', views.createProductFeeConfig, name="product-fee-config-create"),
-    # path('<str:product_id>/fee-config/<str:fee_config_id>/', views.getProductFeeConfig, name="product-fee-config"),
-    # path('<str:product_id>/fee-config/<str:fee_config_id>/update/', views.updateProductFeeConfig, name="product-fee-config-update"),
-    # path('<str:product_id>/fee-config/<str:fee_config_id>/archive/', views.archiveProductFeeConfig, name="product-fee-config-archive"),
+    # path('<str:product_id>/configs/<product_config_id>/fee-configs/', views.getFeeConfigs, name="fee-configs"),
+    # path('<str:product_id>/configs/<product_config_id>/fee-configs/create/', views.createFeeConfig, name="fee-config-create"),
+    # path('<str:product_id>/configs/<product_config_id>/fee-configs/<str:fee_config_id>/', views.getFeeConfig, name="fee-config"),
+    # path('<str:product_id>/configs/<product_config_id>/fee-configs/<str:fee_config_id>/update/', views.updateFeeConfig, name="fee-config-update"),
+    # path('<str:product_id>/configs/<product_config_id>/fee-configs/<str:fee_config_id>/archive/', views.archiveFeeConfig, name="fee-config-archive"),
 
 ]

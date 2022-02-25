@@ -5,6 +5,7 @@ from accounts.models import *
 from organizations.models import Organization, OrganizationSettings
 from loans.models import Product as LoanProduct
 from loans.models import ProductConfig as LoanProductConfig
+from loans.models import PaymentConfig as LoanPaymentConfig
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
@@ -80,6 +81,7 @@ class LoanProductSerializer(serializers.ModelSerializer):
     def get_organization_id(self, obj):
         return obj.organization.organization_id
 
+
 class LoanProductConfigSerializer(serializers.ModelSerializer):
     product = serializers.SerializerMethodField(read_only=True)
     product_id = serializers.SerializerMethodField(read_only=True)
@@ -93,3 +95,22 @@ class LoanProductConfigSerializer(serializers.ModelSerializer):
 
     def get_product_id(self, obj):
         return obj.product.product_id
+
+
+class LoanPaymentConfigSerializer(serializers.ModelSerializer):
+    product = serializers.SerializerMethodField(read_only=True)
+    product_id = serializers.SerializerMethodField(read_only=True)
+    product_config_id = serializers.SerializerMethodField(read_only=True)
+    
+    class Meta:
+        model = LoanPaymentConfig
+        fields = ['product', 'product_id', 'product_config_id', 'payment_config_id', 'label', 'structure', 'day', 'amount']
+    
+    def get_product(self, obj):
+        return obj.product_config.product.name
+
+    def get_product_id(self, obj):
+        return obj.product_config.product.product_id
+    
+    def get_product_config_id(self, obj):
+        return obj.product_config.product_config_id
