@@ -46,7 +46,6 @@ INSTALLED_APPS = [
     'organizations',
     'onboarding',
     'loans',
-    'kyc',
 
 ]
 
