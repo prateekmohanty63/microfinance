@@ -54,7 +54,6 @@ def createOrganization(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getOrganizations(request):
-
     user = request.user
     
     # Get the organizations the user is added to
@@ -100,15 +99,17 @@ def getOrganizations(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getOrganization(request, organization_id):
-
     user = request.user
+    
+    # Verify permission to access the organization
     user_organization = check_organization_permissions(user=user, organization_id=organization_id, roles=['user', 'admin'])
-    if user_organization['organization']:
-        serializer = OrganizationSerializer(user_organization['organization'], many=False)
-        return Response(serializer.data)
-    else:
+    if not user_organization['organization']:
         message = {'detail': user_organization['message']}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    
+    serializer = OrganizationSerializer(user_organization['organization'], many=False)
+    return Response(serializer.data)
+        
        
 
 @api_view(['PUT'])
@@ -116,48 +117,52 @@ def getOrganization(request, organization_id):
 def updateOrganization(request, organization_id):
     data = request.data
     user = request.user
-    user_organization = check_organization_permissions(user=user, organization_id=organization_id, roles=['admin'])
-    if user_organization['organization']:
-        organization = user_organization['organization']
-        organization.name = data['name']
-        organization.save()
-        serializer = OrganizationSerializer(organization, many=False)
-        return Response(serializer.data)
-    else:
+    
+    # Verify permission to access the organization
+    user_organization = check_organization_permissions(user=user, organization_id=organization_id, roles=['user', 'admin'])
+    if not user_organization['organization']:
         message = {'detail': user_organization['message']}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+    organization = user_organization['organization']
+    organization.name = data['name']
+    organization.save()
+    serializer = OrganizationSerializer(organization, many=False)
+    return Response(serializer.data)
 
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
 def archiveOrganization(request, organization_id):
     user = request.user
-    user_organization = check_organization_permissions(user=user, organization_id=organization_id, roles=['admin'])
-    if user_organization['organization']:
-        organization = user_organization['organization']
-        organization.status = 'archived'
-        organization.save()
-        message = {'detail': 'Organization was archived'}
-        return Response(message, status=200)
-    else:
+    
+    # Verify permission to access the organization
+    user_organization = check_organization_permissions(user=user, organization_id=organization_id, roles=['user', 'admin'])
+    if not user_organization['organization']:
         message = {'detail': user_organization['message']}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+    organization = user_organization['organization']
+    organization.status = 'archived'
+    organization.save()
+    message = {'detail': 'Organization was archived'}
+    return Response(message, status=200)
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getOrganizationSettings(request, organization_id):
-
     user = request.user
-    user_organization = check_organization_permissions(user=user, organization_id=organization_id, roles=['admin'])
-    if user_organization['organization']:
-        organization = user_organization['organization']
-        organization_settings = OrganizationSettings.objects.filter(organization=organization).first()
-        serializer = OrganizationSettingsSerializer(organization_settings, many=False)
-        return Response(serializer.data)
-    else:
+    # Verify permission to access the organization
+    user_organization = check_organization_permissions(user=user, organization_id=organization_id, roles=['user', 'admin'])
+    if not user_organization['organization']:
         message = {'detail': user_organization['message']}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+    organization = user_organization['organization']
+    organization_settings = OrganizationSettings.objects.filter(organization=organization).first()
+    serializer = OrganizationSettingsSerializer(organization_settings, many=False)
+    return Response(serializer.data)
        
 
 @api_view(['PUT'])
@@ -165,14 +170,15 @@ def getOrganizationSettings(request, organization_id):
 def updateOrganizationSettings(request, organization_id):
     data = request.data
     user = request.user
-    user_organization = check_organization_permissions(user=user, organization_id=organization_id, roles=['admin'])
-    if user_organization['organization']:
-        organization = user_organization['organization']
-        organization_settings = OrganizationSettings.objects.filter(organization=organization).first()
-        organization_settings.multiple_loans_per_customer = data['multiple_loans_per_customer']
-        organization_settings.save()
-        serializer = OrganizationSettingsSerializer(organization_settings, many=False)
-        return Response(serializer.data)
-    else:
+    # Verify permission to access the organization
+    user_organization = check_organization_permissions(user=user, organization_id=organization_id, roles=['user', 'admin'])
+    if not user_organization['organization']:
         message = {'detail': user_organization['message']}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+    organization = user_organization['organization']
+    organization_settings = OrganizationSettings.objects.filter(organization=organization).first()
+    organization_settings.multiple_loans_per_customer = data['multiple_loans_per_customer']
+    organization_settings.save()
+    serializer = OrganizationSettingsSerializer(organization_settings, many=False)
+    return Response(serializer.data)

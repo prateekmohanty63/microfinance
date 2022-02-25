@@ -86,7 +86,7 @@ class LoanProductConfigSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = LoanProductConfig
-        fields = ['product', 'product_id', 'product_config_id', 'label', 'length', 'overdue_on_day', 'default_on_day']
+        fields = ['product', 'product_id', 'product_config_id', 'label', 'length', 'overdue_on_day', 'default_on_day', 'current']
     
     def get_product(self, obj):
         return obj.product.name

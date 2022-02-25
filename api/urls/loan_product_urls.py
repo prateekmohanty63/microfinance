@@ -1,5 +1,6 @@
 from django.urls import path
 from api.views.loan_product import product_views as product_views
+from api.views.loan_product import product_config_views as product_config_views
 
 urlpatterns = [
 
@@ -11,11 +12,14 @@ urlpatterns = [
     path('<str:product_id>/archive/', product_views.archiveProduct, name="product-archive"),
 
     # Product Config
-    path('<str:product_id>/config/', product_views.getProductConfig, name="product-config"),
-    path('<str:product_id>/config/update/', product_views.updateProductConfig, name="product-config-update"),
+    path('<str:product_id>/configs/', product_config_views.getProductConfigs, name="product-configs"),
+    path('<str:product_id>/configs/create/', product_config_views.createProductConfig, name="product-config-create"),
+    path('<str:product_id>/configs/<product_config_id>/', product_config_views.getProductConfig, name="product-config"),
+    path('<str:product_id>/configs/<product_config_id>/update/', product_config_views.updateProductConfig, name="product-config-update"),
+    path('<str:product_id>/configs/<product_config_id>/archive/', product_config_views.archiveProductConfig, name="product-config-archive"),
     
     # Payment Config
-    # path('<str:product_id>/payment-config/', views.getProductPaymentConfig, name="product-payment-configs"),
+    # path('<str:product_id>/config/payment-config/', views.getProductPaymentConfig, name="product-payment-configs"),
     # path('<str:product_id>/payment-config/create/', views.createProductPaymentConfig, name="product-payment-config-create"),
     # path('<str:product_id>/payment-config/<str:payment_config_id>/', views.getProductPaymentConfig, name="product-payment-config"),
     # path('<str:product_id>/payment-config/<str:payment_config_id>/update/', views.updateProductPaymentConfig, name="product-payment-config-update"),

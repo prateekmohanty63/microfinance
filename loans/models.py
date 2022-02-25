@@ -47,6 +47,19 @@ class ProductConfig(models.Model):
 
     current = models.BooleanField(default=False)
 
+    PRODUCT_CONFIG_STATUS = (
+        ('active', 'Active'),
+        ('archived', 'Archived'),
+        ('deleted', 'Deleted'),
+    )
+    
+    status = models.CharField(
+        max_length=25,
+        choices=PRODUCT_CONFIG_STATUS,
+        blank=False,
+        default='active',
+    )
+
     def __str__(self):
         return str(self.id)
 
