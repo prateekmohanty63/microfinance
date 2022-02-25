@@ -3,6 +3,8 @@ from django.db.models import JSONField
 
 from django.conf import settings
 
+from customers.models import *
+
 
 class Organization(models.Model):
     id = models.AutoField(primary_key=True)
@@ -59,6 +61,30 @@ class OrganizationUser(models.Model):
         choices=ORGANIZATION_ROLE,
         blank=False,
         default='user',
+    )
+
+    def __str__(self):
+        return self.id
+
+
+class OrganizationCustomer(models.Model):
+    id = models.AutoField(primary_key=True)
+    organization = models.ForeignKey('Organization', on_delete=models.SET_NULL, null=True)
+    customer = models.ForeignKey('customers.Customer', on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
+
+    ORGANIZATION_CUSTOMER_STATUS = (
+        ('active', 'Active'),
+        ('inactive', 'Inactive'),
+        ('blacklisted', 'Blacklisted'),
+    )
+
+    status = models.CharField(
+        max_length=25,
+        choices=ORGANIZATION_CUSTOMER_STATUS,
+        blank=False,
+        default='active',
     )
 
     def __str__(self):
