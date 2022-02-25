@@ -15,3 +15,7 @@ def randomlongstr():
 # 64 digit random string for Public Links
 def randomverylongstr():
     return ''.join(random.choices(string.ascii_uppercase + string.ascii_lowercase + string.digits, k = 64))
+
+# 16 digit random string for Ids
+def randomint():
+    return ''.join(random.choices(string.digits, k = 16))

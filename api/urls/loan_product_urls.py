@@ -1,9 +1,9 @@
 from django.urls import path
-from api.views.loan_product import product_views as product_views
-from api.views.loan_product import product_config_views as product_config_views
-from api.views.loan_product import payment_config_views as payment_config_views
-from api.views.loan_product import interest_config_views as interest_config_views
-from api.views.loan_product import fee_config_views as fee_config_views
+from api.views.loan_products import product_views as product_views
+from api.views.loan_products import product_config_views as product_config_views
+from api.views.loan_products import payment_config_views as payment_config_views
+from api.views.loan_products import interest_config_views as interest_config_views
+from api.views.loan_products import fee_config_views as fee_config_views
 
 urlpatterns = [
 

@@ -14,6 +14,7 @@ urlpatterns = [
     # API
     path('api/users/', include('api.urls.user_urls')),
     path('api/organizations/', include('api.urls.organization_urls')),
+    path('api/customers/', include('api.urls.customer_urls')),
     path('api/loans/products/', include('api.urls.loan_product_urls')),
     
     # Web App

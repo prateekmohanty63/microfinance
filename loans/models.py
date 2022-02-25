@@ -15,7 +15,7 @@ class Product(models.Model):
     created_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
-
+    
     PRODUCT_STATUS = (
         ('active', 'Active'),
         ('archived', 'Archived'),
@@ -212,11 +212,13 @@ class Loan(models.Model):
     def __str__(self):
         return str(self.id)
 
-    
-class Interest(models.Model):
+
+class Payment(models.Model):
     id = models.AutoField(primary_key=True)
-    interest_id = models.CharField(max_length=32, null=False, blank=True)
+    payment_id = models.CharField(max_length=32, null=False, blank=True)
+    payment_number = models.CharField(max_length=16, null=False, blank=True)
     amount = models.FloatField(null=True, blank=True)
+    created_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
 
@@ -224,12 +226,10 @@ class Interest(models.Model):
         return str(self.id)
 
     
-class Payment(models.Model):
+class Interest(models.Model):
     id = models.AutoField(primary_key=True)
-    payment_id = models.CharField(max_length=32, null=False, blank=True)
-    payment_number = models.CharField(max_length=16, null=False, blank=True)
+    interest_id = models.CharField(max_length=32, null=False, blank=True)
     amount = models.FloatField(null=True, blank=True)
-    created_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
 

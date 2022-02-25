@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from accounts.models import *
 from organizations.models import Organization, OrganizationSettings
+from customers.models import Customer
 from loans.models import Product as LoanProduct
 from loans.models import ProductConfig as LoanProductConfig
 from loans.models import PaymentConfig as LoanPaymentConfig
@@ -154,3 +155,10 @@ class LoanFeeConfigSerializer(serializers.ModelSerializer):
     
     def get_product_config_id(self, obj):
         return obj.product_config.product_config_id
+
+
+class CustomerSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Customer
+        fields = ['customer_id', 'customer_number']
