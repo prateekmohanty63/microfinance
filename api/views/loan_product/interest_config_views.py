@@ -5,8 +5,8 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from loans.models import Product, ProductConfig, PaymentConfig
-from api.serializers import LoanPaymentConfigSerializer as PaymentConfigSerializer
+from loans.models import Product, ProductConfig, InterestConfig
+from api.serializers import LoanInterestConfigSerializer as InterestConfigSerializer
 
 from rest_framework import status
 
@@ -16,7 +16,7 @@ from core.utils import randomstr
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def createPaymentConfig(request, product_id, product_config_id):
+def createInterestConfig(request, product_id, product_config_id):
     user = request.user
     data = request.data
 
@@ -48,8 +48,8 @@ def createPaymentConfig(request, product_id, product_config_id):
     try:
 
         # Create the product configuration
-        payment_config = PaymentConfig.objects.create(
-            payment_config_id=randomstr(),
+        interest_config = InterestConfig.objects.create(
+            interest_config_id=randomstr(),
             product_config=product_config,
             day=data['day'],
             structure=data['structure'],
@@ -57,24 +57,24 @@ def createPaymentConfig(request, product_id, product_config_id):
         )
 
         if 'amount' in data:
-            payment_config.amount=data['amount']
-            payment_config.save()
+            interest_config.amount=data['amount']
+            interest_config.save()
         if 'label' in data:
-            payment_config.label=data['label']
-            payment_config.save()
+            interest_config.label=data['label']
+            interest_config.save()
 
-        serializer = PaymentConfigSerializer(payment_config, many=False)
+        serializer = InterestConfigSerializer(interest_config, many=False)
         return Response(serializer.data)
 
     except Exception as e:
         print(e)
-        message = {'detail': 'There was an error creating this payment configuration'}
+        message = {'detail': 'There was an error creating this interest configuration'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
         
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def getPaymentConfigs(request, product_id, product_config_id):
+def getInterestConfigs(request, product_id, product_config_id):
     user = request.user
     data = request.data
 
@@ -105,40 +105,40 @@ def getPaymentConfigs(request, product_id, product_config_id):
         
     organization = user_organization['organization']
     
-    payment_configs = PaymentConfig.objects.filter(
+    interest_configs = InterestConfig.objects.filter(
         product_config=product_config,
         status='active',
     ).order_by('day')
 
     page = request.query_params.get('page')
-    paginator = Paginator(payment_configs, 5)
+    paginator = Paginator(interest_configs, 5)
 
     try:
-        payment_configs = paginator.page(page)
+        interest_configs = paginator.page(page)
     except PageNotAnInteger:
-        payment_configs = paginator.page(1)
+        interest_configs = paginator.page(1)
     except EmptyPage:
-        payment_configs = paginator.page(paginator.num_pages)
+        interest_configs = paginator.page(paginator.num_pages)
 
     if page == None:
         page = 1
 
     page = int(page)
     print('Page:', page)
-    serializer = PaymentConfigSerializer(payment_configs, many=True)
-    return Response({'payment_configs': serializer.data, 'page': page, 'pages': paginator.num_pages})
+    serializer = InterestConfigSerializer(interest_configs, many=True)
+    return Response({'interest_configs': serializer.data, 'page': page, 'pages': paginator.num_pages})
 
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def getPaymentConfig(request, product_id, product_config_id, payment_config_id):
+def getInterestConfig(request, product_id, product_config_id, interest_config_id):
 
     user = request.user
 
-    # Check to make sure the payment_config is valid
-    payment_config = PaymentConfig.objects.filter(payment_config_id=payment_config_id, status='active').first()
-    if not payment_config:
-        message = {'detail': 'Payment configuration does not exist'}
+    # Check to make sure the interest_config is valid
+    interest_config = InterestConfig.objects.filter(interest_config_id=interest_config_id, status='active').first()
+    if not interest_config:
+        message = {'detail': 'Interest configuration does not exist'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
     # Check to make sure the product_config is valid
@@ -146,7 +146,7 @@ def getPaymentConfig(request, product_id, product_config_id, payment_config_id):
     if not product_config:
         message = {'detail': 'Product configuration does not exist'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
-    if payment_config.product_config != product_config:
+    if interest_config.product_config != product_config:
         message = {'detail': 'Product config id is not valid'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
@@ -169,20 +169,20 @@ def getPaymentConfig(request, product_id, product_config_id, payment_config_id):
         message = {'detail': 'Organization id is not valid'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
         
-    serializer = PaymentConfigSerializer(payment_config, many=False)
+    serializer = InterestConfigSerializer(interest_config, many=False)
     return Response(serializer.data)    
     
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-def updatePaymentConfig(request, product_id, product_config_id, payment_config_id):
+def updateInterestConfig(request, product_id, product_config_id, interest_config_id):
     data = request.data
     user = request.user
 
-    # Check to make sure the payment_config is valid
-    payment_config = PaymentConfig.objects.filter(payment_config_id=payment_config_id, status='active').first()
-    if not payment_config:
-        message = {'detail': 'Payment configuration does not exist'}
+    # Check to make sure the interest_config is valid
+    interest_config = InterestConfig.objects.filter(interest_config_id=interest_config_id, status='active').first()
+    if not interest_config:
+        message = {'detail': 'Interest configuration does not exist'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
     # Check to make sure the product_config is valid
@@ -190,7 +190,7 @@ def updatePaymentConfig(request, product_id, product_config_id, payment_config_i
     if not product_config:
         message = {'detail': 'Product configuration does not exist'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
-    if payment_config.product_config != product_config:
+    if interest_config.product_config != product_config:
         message = {'detail': 'Product config id is not valid'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
@@ -214,29 +214,29 @@ def updatePaymentConfig(request, product_id, product_config_id, payment_config_i
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
     
     if 'label' in data:   
-        payment_config.label=data['label']
+        interest_config.label=data['label']
     if 'day' in data:
-        payment_config.day=data['day']
+        interest_config.day=data['day']
     if 'structure' in data:
-        payment_config.structure=data['structure']
+        interest_config.structure=data['structure']
     if 'amount' in data:
-        payment_config.amount=data['amount']
-
-    payment_config.save()
-    serializer = PaymentConfigSerializer(payment_config, many=False)
+        interest_config.amount=data['amount']
+    
+    interest_config.save()
+    serializer = InterestConfigSerializer(interest_config, many=False)
     return Response(serializer.data)
     
 
 @api_view(['PUT'])
 @permission_classes([IsAuthenticated])
-def archivePaymentConfig(request, product_id, product_config_id, payment_config_id):
+def archiveInterestConfig(request, product_id, product_config_id, interest_config_id):
     
     user = request.user
 
-    # Check to make sure the payment_config is valid
-    payment_config = PaymentConfig.objects.filter(payment_config_id=payment_config_id, status='active').first()
-    if not payment_config:
-        message = {'detail': 'Payment configuration does not exist'}
+    # Check to make sure the interest_config is valid
+    interest_config = InterestConfig.objects.filter(interest_config_id=interest_config_id, status='active').first()
+    if not interest_config:
+        message = {'detail': 'Interest configuration does not exist'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
     # Check to make sure the product_config is valid
@@ -244,7 +244,7 @@ def archivePaymentConfig(request, product_id, product_config_id, payment_config_
     if not product_config:
         message = {'detail': 'Product configuration does not exist'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
-    if payment_config.product_config != product_config:
+    if interest_config.product_config != product_config:
         message = {'detail': 'Product config id is not valid'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
@@ -267,9 +267,7 @@ def archivePaymentConfig(request, product_id, product_config_id, payment_config_
         message = {'detail': 'Organization id is not valid'}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
 
-    payment_config.status = 'archived'
-    payment_config.save()
-    message = {'detail': 'Payment configuration was archived'}
+    interest_config.status = 'archived'
+    interest_config.save()
+    message = {'detail': 'Interest configuration was archived'}
     return Response(message, status=200)     
-
-  

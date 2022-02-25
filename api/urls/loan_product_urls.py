@@ -2,6 +2,7 @@ from django.urls import path
 from api.views.loan_product import product_views as product_views
 from api.views.loan_product import product_config_views as product_config_views
 from api.views.loan_product import payment_config_views as payment_config_views
+from api.views.loan_product import interest_config_views as interest_config_views
 
 urlpatterns = [
 
@@ -25,13 +26,13 @@ urlpatterns = [
     path('<str:product_id>/configs/<product_config_id>/payment-configs/<str:payment_config_id>/', payment_config_views.getPaymentConfig, name="payment-config"),
     path('<str:product_id>/configs/<product_config_id>/payment-configs/<str:payment_config_id>/update/', payment_config_views.updatePaymentConfig, name="payment-config-update"),
     path('<str:product_id>/configs/<product_config_id>/payment-configs/<str:payment_config_id>/archive/', payment_config_views.archivePaymentConfig, name="payment-config-archive"),
-
+    
     # Interest Config
-    # path('<str:product_id>/configs/<product_config_id>/interest-configs/', views.getInterestConfigs, name="interest-configs"),
-    # path('<str:product_id>/configs/<product_config_id>/interest-configs/create/', views.createInterestConfig, name="interest-config-create"),
-    # path('<str:product_id>/configs/<product_config_id>/interest-configs/<str:interest_config_id>/', views.getInterestConfig, name="interest-config"),
-    # path('<str:product_id>/configs/<product_config_id>/interest-configs/<str:interest_config_id>/update/', views.updateInterestConfig, name="interest-config-update"),
-    # path('<str:product_id>/configs/<product_config_id>/interest-configs/<str:interest_config_id>/archive/', views.archiveInterestConfig, name="interest-config-archive"),
+    path('<str:product_id>/configs/<product_config_id>/interest-configs/', interest_config_views.getInterestConfigs, name="interest-configs"),
+    path('<str:product_id>/configs/<product_config_id>/interest-configs/create/', interest_config_views.createInterestConfig, name="interest-config-create"),
+    path('<str:product_id>/configs/<product_config_id>/interest-configs/<str:interest_config_id>/', interest_config_views.getInterestConfig, name="interest-config"),
+    path('<str:product_id>/configs/<product_config_id>/interest-configs/<str:interest_config_id>/update/', interest_config_views.updateInterestConfig, name="interest-config-update"),
+    path('<str:product_id>/configs/<product_config_id>/interest-configs/<str:interest_config_id>/archive/', interest_config_views.archiveInterestConfig, name="interest-config-archive"),
 
     # Fee Config
     # path('<str:product_id>/configs/<product_config_id>/fee-configs/', views.getFeeConfigs, name="fee-configs"),

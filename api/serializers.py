@@ -6,6 +6,8 @@ from organizations.models import Organization, OrganizationSettings
 from loans.models import Product as LoanProduct
 from loans.models import ProductConfig as LoanProductConfig
 from loans.models import PaymentConfig as LoanPaymentConfig
+from loans.models import InterestConfig as LoanInterestConfig
+from loans.models import FeeConfig as LoanFeeConfig
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
@@ -105,6 +107,44 @@ class LoanPaymentConfigSerializer(serializers.ModelSerializer):
     class Meta:
         model = LoanPaymentConfig
         fields = ['product', 'product_id', 'product_config_id', 'payment_config_id', 'label', 'structure', 'day', 'amount']
+    
+    def get_product(self, obj):
+        return obj.product_config.product.name
+
+    def get_product_id(self, obj):
+        return obj.product_config.product.product_id
+    
+    def get_product_config_id(self, obj):
+        return obj.product_config.product_config_id
+
+
+class LoanInterestConfigSerializer(serializers.ModelSerializer):
+    product = serializers.SerializerMethodField(read_only=True)
+    product_id = serializers.SerializerMethodField(read_only=True)
+    product_config_id = serializers.SerializerMethodField(read_only=True)
+    
+    class Meta:
+        model = LoanInterestConfig
+        fields = ['product', 'product_id', 'product_config_id', 'interest_config_id', 'label', 'structure', 'day', 'amount']
+    
+    def get_product(self, obj):
+        return obj.product_config.product.name
+
+    def get_product_id(self, obj):
+        return obj.product_config.product.product_id
+    
+    def get_product_config_id(self, obj):
+        return obj.product_config.product_config_id
+
+
+class LoanFeeConfigSerializer(serializers.ModelSerializer):
+    product = serializers.SerializerMethodField(read_only=True)
+    product_id = serializers.SerializerMethodField(read_only=True)
+    product_config_id = serializers.SerializerMethodField(read_only=True)
+    
+    class Meta:
+        model = LoanFeeConfig
+        fields = ['product', 'product_id', 'product_config_id', 'fee_config_id', 'label', 'structure', 'day', 'amount']
     
     def get_product(self, obj):
         return obj.product_config.product.name

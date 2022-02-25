@@ -81,7 +81,7 @@ class InterestConfig(models.Model):
         ('flat-fee', 'Flat Fee'),
     )
     
-    config = models.CharField(
+    structure = models.CharField(
         max_length=25,
         choices=INTEREST_CONFIG_STRUCTURE,
         blank=False,
