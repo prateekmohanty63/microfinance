@@ -29,6 +29,13 @@ def createOrganization(request):
             created_user=user,
         )
 
+        # Create the organization user / created user as an admin
+        organization_user = OrganizationUser.objects.create(
+            organization=organization,
+            user=user,
+            role='admin'
+        )
+
         serializer = OrganizationSerializer(organization, many=False)
         return Response(serializer.data)
     

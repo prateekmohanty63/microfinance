@@ -15,7 +15,7 @@ class OrganizationSettings(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class Product(models.Model):
@@ -70,7 +70,7 @@ class ProductConfig(models.Model):
     )
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class InterestConfig(models.Model):
@@ -106,7 +106,7 @@ class InterestConfig(models.Model):
     )
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class FeeConfig(models.Model):
@@ -142,7 +142,7 @@ class FeeConfig(models.Model):
     )
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class PaymentConfig(models.Model):
@@ -178,7 +178,7 @@ class PaymentConfig(models.Model):
     )
 
     def __str__(self):
-        return self.id
+        return str(self.id)
     
 
 class Loan(models.Model):
@@ -206,7 +206,7 @@ class Loan(models.Model):
     )
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
     
 class Interest(models.Model):
@@ -217,7 +217,7 @@ class Interest(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
     
 class Payment(models.Model):
@@ -227,9 +227,9 @@ class Payment(models.Model):
     amount = models.FloatField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
-    
+
     def __str__(self):
-        return self.id
+        return str(self.id)
 
     
 class Fee(models.Model):
@@ -241,7 +241,7 @@ class Fee(models.Model):
     last_updated = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class Transaction(models.Model):
@@ -281,4 +281,4 @@ class Transaction(models.Model):
     )
 
     def __str__(self):
-        return self.id
+        return str(self.id)

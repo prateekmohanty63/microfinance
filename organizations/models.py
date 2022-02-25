@@ -64,7 +64,7 @@ class OrganizationUser(models.Model):
     )
 
     def __str__(self):
-        return self.id
+        return str(self.id)
 
 
 class OrganizationCustomer(models.Model):

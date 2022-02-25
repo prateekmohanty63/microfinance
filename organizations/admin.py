@@ -21,3 +21,11 @@ class OrganizationAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
 admin.site.register(Organization, OrganizationAdmin)
+
+class OrganizationUserAdmin(admin.ModelAdmin):
+    list_display = ['user', 'organization', 'role', 'status']
+    fields = ['user', 'organization', 'role', 'status', 'created_at', 'last_updated']
+    readonly_fields = ['user', 'organization', 'created_at', 'last_updated']
+    list_per_page = 50
+
+admin.site.register(OrganizationUser, OrganizationUserAdmin)
