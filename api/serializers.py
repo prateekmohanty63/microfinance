@@ -2,6 +2,7 @@ from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 from accounts.models import *
+from organizations.models import *
 
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
@@ -38,3 +39,9 @@ class UserSerializerWithToken(UserSerializer):
 
     def get_id(self, obj):
         return obj.id
+
+class OrganizationSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = Organization
+        fields = ['organization_id', 'name']

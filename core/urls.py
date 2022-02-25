@@ -13,6 +13,7 @@ urlpatterns = [
 
     # API
     path('api/users/', include('api.urls.user_urls')),
+    path('api/organizations/', include('api.urls.organization_urls')),
     
     # Web App
     path('', include('accounts.urls')),
