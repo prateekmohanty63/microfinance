@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from organizations.models import Organization, OrganizationUser
-from api.serializers import OrganizationSerializer
+from api.serializers import OrganizationSerializer, OrganizationSettingsSerializer
 
 from rest_framework import status
 
@@ -34,6 +34,12 @@ def createOrganization(request):
             organization=organization,
             user=user,
             role='admin'
+        )
+
+        # Create the organization settings with default values
+        organization_settings = OrganizationSettings.objects.create(
+            organization=organization,
+            # Other fields with default values will auto-populate
         )
 
         serializer = OrganizationSerializer(organization, many=False)
@@ -133,6 +139,40 @@ def archiveOrganization(request, organization_id):
         organization.save()
         message = {'detail': 'Organization was archived'}
         return Response(message, status=200)
+    else:
+        message = {'detail': user_organization['message']}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getOrganizationSettings(request, organization_id):
+
+    user = request.user
+    user_organization = check_organization_permissions(user=user, organization_id=organization_id, roles=['user', 'admin'])
+    if user_organization['organization']:
+        organization = user_organization['organization']
+        organization_settings = OrganizationSettings.objects.filter(organization=organization).first()
+        serializer = OrganizationSettingsSerializer(organization_settings, many=False)
+        return Response(serializer.data)
+    else:
+        message = {'detail': user_organization['message']}
+        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+       
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def updateOrganizationSettings(request, organization_id):
+    data = request.data
+    user = request.user
+    user_organization = check_organization_permissions(user=user, organization_id=organization_id, roles=['admin'])
+    if user_organization['organization']:
+        organization = user_organization['organization']
+        organization_settings = OrganizationSettings.objects.filter(organization=organization).first()
+        organization_settings.multiple_loans_per_customer = data['multiple_loans_per_customer']
+        organization_settings.save()
+        serializer = OrganizationSettingsSerializer(organization_settings, many=False)
+        return Response(serializer.data)
     else:
         message = {'detail': user_organization['message']}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)

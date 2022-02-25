@@ -4,6 +4,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from accounts.models import *
 from organizations.models import *
 
+
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True)
     id = serializers.SerializerMethodField(read_only=True)
@@ -26,6 +27,7 @@ class UserSerializer(serializers.ModelSerializer):
 
         return name
 
+
 class UserSerializerWithToken(UserSerializer):
     token = serializers.SerializerMethodField(read_only=True)
 
@@ -40,8 +42,24 @@ class UserSerializerWithToken(UserSerializer):
     def get_id(self, obj):
         return obj.id
 
+
 class OrganizationSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Organization
         fields = ['organization_id', 'name']
+
+
+class OrganizationSettingsSerializer(serializers.ModelSerializer):
+    organization = serializers.SerializerMethodField(read_only=True)
+    organization_id = serializers.SerializerMethodField(read_only=True)
+    
+    class Meta:
+        model = OrganizationSettings
+        fields = ['organization', 'organization_id', 'multiple_loans_per_customer']
+    
+    def get_organization(self, obj):
+        return obj.organization.name
+
+    def get_organization_id(self, obj):
+        return obj.organization.organization_id
