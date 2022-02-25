@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'home',
 
     'organizations',
+    'customers',
     'onboarding',
     'loans',
 
